@@ -1,0 +1,14 @@
+---
+description: Backend optimization rules for Python and .NET Core contexts
+globs: **/*.{ts,py,cs,csproj,sln}
+alwaysApply: false
+---
+
+# Python and .NET Core Optimization
+
+- Prioritize backend-only logic; skip frontend-only patterns.
+- Detect and classify project stack (`python`, `dotnet`) from structure and files.
+- Build prompt context with only relevant stack details to reduce token usage.
+- Prefer concise summaries of directory trees and key files over full dumps.
+- Cache reusable session context using memory-tree nodes and fingerprints.
+- Always produce deterministic prompt sections: rules, skills, structure, memory.

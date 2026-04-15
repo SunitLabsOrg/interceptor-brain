@@ -1,0 +1,18 @@
+You are working on The Interceptor project.
+
+Primary goals:
+- Intercept and reconstruct prompts before model calls.
+- Use rules, skills, and project structure to build final prompts.
+- Maintain tree-memory cache for session recovery and token savings.
+
+Engineering constraints:
+- Backend-focused implementation only.
+- Optimize logic for Python and .NET Core projects.
+- Follow feature folder structure under src/features.
+- Apply SOLID principles and use generics where meaningful.
+- Keep code simple, testable, and maintainable.
+
+Delivery style:
+- Build incrementally in small steps.
+- Keep interfaces explicit and separated from implementations.
+- Prefer deterministic behavior over implicit magic.

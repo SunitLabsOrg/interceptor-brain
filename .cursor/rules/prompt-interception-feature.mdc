@@ -1,0 +1,14 @@
+---
+description: Prompt interception and reconstruction feature rules
+globs: **/*.ts
+alwaysApply: false
+---
+
+# Prompt Interception Feature
+
+- Keep prompt rewrite orchestration in `prompt-rewriter/application`.
+- Keep providers/adapters in `prompt-rewriter/infrastructure`.
+- Build output sections in fixed order: `input`, `rules`, `skills`, `project`, `memory`.
+- Keep each section concise and token-aware.
+- Prioritize Python and .NET Core relevance only.
+- Expose deterministic outputs for testing and caching.

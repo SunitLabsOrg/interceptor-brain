@@ -1,0 +1,13 @@
+---
+description: Skill selection and usage guidance for this repository
+alwaysApply: true
+---
+
+# Skill Governance
+
+- Apply a skill only when task intent matches the skill purpose.
+- Read the selected skill instructions before implementing changes.
+- Do not mention a skill without actually applying its workflow.
+- Keep skill-driven output concise and implementation-first.
+- Prefer reusable contracts and adapters when skill output adds behavior.
+- If requirements are unclear, ask targeted questions before implementation.

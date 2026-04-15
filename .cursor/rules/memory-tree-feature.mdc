@@ -1,0 +1,14 @@
+---
+description: Tree-memory cache and session retrieval feature rules
+globs: **/*.ts
+alwaysApply: false
+---
+
+# Memory Tree Feature
+
+- Implement memory tree as a generic domain model.
+- Keep cache adapters replaceable (in-memory first, file/db later).
+- Track `lastAccessedUtc` for pruning decisions.
+- Prune deterministically with stable ordering.
+- Keep session payload compact and backend-context focused.
+- Never mutate node payloads after creation; create new nodes instead.

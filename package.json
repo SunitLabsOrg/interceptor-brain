@@ -1,0 +1,60 @@
+{
+  "name": "@interceptor/brain-mcp",
+  "version": "0.1.1",
+  "description": "MCP server that acts as a project brain with handoffs, tasks, decisions, and phase rules.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "interceptor-brain-mcp": "dist/server/main.js",
+    "interceptor-brain-init": "dist/cli/init.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -w -p tsconfig.json",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "postinstall": "node -e \"console.log('\\\\n========================================'); console.log('  Brainly-SP: interceptor-brain ready'); console.log('  Run: interceptor-brain-init'); console.log('========================================\\\\n');\"",
+    "prepublishOnly": "npm run check && npm run build",
+    "start:mcp": "node dist/server/main.js",
+    "benchmark:compare": "node dist/benchmark/run-compare.js",
+    "init:project": "node dist/cli/init.js",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version"
+  },
+  "keywords": [
+    "prompt",
+    "cache",
+    "memory-tree",
+    "python",
+    "dotnet",
+    "backend",
+    "mcp",
+    "task-tracking",
+    "session-handoff"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SunitLabsOrg/interceptor-brain.git"
+  },
+  "homepage": "https://github.com/SunitLabsOrg/interceptor-brain#readme",
+  "bugs": {
+    "url": "https://github.com/SunitLabsOrg/interceptor-brain/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^5.8.3"
+  }
+}

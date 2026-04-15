@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Package artifacts
+*.tgz
+
+# Runtime/local state
+.interceptor-brain/
+benchmark/results/
+
+# Local MCP/client config
+.cursor/mcp.json
+
+# Environment and logs
+.env
+.env.*
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,14 @@
+---
+description: Core architecture and coding standards for The Interceptor
+alwaysApply: true
+---
+
+# Core Project Standards
+
+- Keep a feature folder structure: `src/features/<feature>/{domain,application,infrastructure}`.
+- Use interfaces at boundaries and inject dependencies (Dependency Inversion).
+- Keep classes small and focused (Single Responsibility).
+- Prefer composable services over inheritance-heavy designs.
+- Use generics only when they improve reuse and type safety.
+- Keep naming clear, intentional, and domain-aligned.
+- Avoid framework lock-in in domain contracts.

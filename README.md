@@ -79,6 +79,40 @@ The initializer configures project-local files based on selected options:
 - `.interceptor-brain/claude_desktop_config.snippet.json` (if Claude target is selected)
 - `.interceptor-brain/SETUP.md`
 
+## Non-Interactive Init Examples
+
+Use non-interactive flags for scripts, CI, or mass onboarding.
+
+Dotnet project:
+
+```bash
+interceptor-brain-init \
+  --projectPath ./orders-api \
+  --language dotnet \
+  --strict true \
+  --installMode global \
+  --clients cursor
+```
+
+Python project:
+
+```bash
+interceptor-brain-init \
+  --projectPath ./inventory-service \
+  --language python \
+  --strict true \
+  --installMode global \
+  --clients cursor,claude
+```
+
+Flags:
+
+- `--projectPath` (or `--path`): target repository path
+- `--language`: `python` or `dotnet`
+- `--strict`: `true` or `false`
+- `--installMode`: `global` or `local`
+- `--clients`: `cursor`, `claude`, or `cursor,claude`
+
 ## Benchmark (Before vs After)
 
 A local test project is included at `benchmark/test-project` (Python + .NET backend fixture).

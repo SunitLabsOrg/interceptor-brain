@@ -11,6 +11,7 @@ dist/
 # Runtime/local state
 .interceptor-brain/
 benchmark/results/
+smoke-test-install/
 
 # Local MCP/client config
 .cursor/mcp.json

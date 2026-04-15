@@ -6,6 +6,12 @@ import type { ClientTarget, InstallMode } from "../features/project-bootstrap/do
 import type { LanguageKind } from "../features/shared/domain/contracts/common.js";
 
 async function main(): Promise<void> {
+  const parsed = parseArgs(process.argv.slice(2));
+  if (parsed !== null) {
+    await runNonInteractive(parsed);
+    return;
+  }
+
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout
@@ -109,3 +115,113 @@ main().catch((error: unknown) => {
   console.error("Initialization failed:", error);
   process.exit(1);
 });
+
+async function runNonInteractive(parsed: ParsedArgs): Promise<void> {
+  await ensureProjectPathExists(parsed.projectPath);
+
+  const bootstrapper = new ProjectBootstrapper();
+  const result = await bootstrapper.initialize({
+    projectPath: parsed.projectPath,
+    language: parsed.language,
+    strictTaskGateDefault: parsed.strictTaskGateDefault,
+    clientTargets: parsed.clientTargets,
+    installMode: parsed.installMode
+  });
+
+  console.log("\nInitialization complete.");
+  console.log(`Project: ${result.projectPath}`);
+  console.log(`Language: ${result.language}`);
+  console.log("Files written:");
+  for (const file of result.writtenFiles) {
+    console.log(`- ${file}`);
+  }
+}
+
+interface ParsedArgs {
+  readonly projectPath: string;
+  readonly language: LanguageKind;
+  readonly strictTaskGateDefault: boolean;
+  readonly installMode: InstallMode;
+  readonly clientTargets: ReadonlyArray<ClientTarget>;
+}
+
+function parseArgs(args: ReadonlyArray<string>): ParsedArgs | null {
+  if (args.length === 0) {
+    return null;
+  }
+
+  const get = (name: string): string | undefined => {
+    const index = args.indexOf(name);
+    return index >= 0 ? args[index + 1] : undefined;
+  };
+
+  const projectPath = get("--projectPath") ?? get("--path");
+  const language = get("--language");
+  const strict = get("--strict");
+  const installMode = get("--installMode");
+  const clientsRaw = get("--clients");
+
+  if (projectPath === undefined || language === undefined || strict === undefined || installMode === undefined) {
+    throw new Error(
+      "Non-interactive usage requires --projectPath, --language, --strict, --installMode, and optional --clients."
+    );
+  }
+
+  const normalizedLanguage = normalizeLanguage(language);
+  const normalizedInstallMode = normalizeInstallMode(installMode);
+  const strictTaskGateDefault = normalizeBoolean(strict);
+  const clientTargets = normalizeClients(clientsRaw ?? "cursor");
+
+  return {
+    projectPath,
+    language: normalizedLanguage,
+    strictTaskGateDefault,
+    installMode: normalizedInstallMode,
+    clientTargets
+  };
+}
+
+function normalizeLanguage(value: string): LanguageKind {
+  if (value === "python" || value === "dotnet") {
+    return value;
+  }
+  throw new Error(`Unsupported language: ${value}. Use python or dotnet.`);
+}
+
+function normalizeInstallMode(value: string): InstallMode {
+  if (value === "global" || value === "local") {
+    return value;
+  }
+  throw new Error(`Unsupported install mode: ${value}. Use global or local.`);
+}
+
+function normalizeBoolean(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "true" || normalized === "1" || normalized === "yes" || normalized === "y") {
+    return true;
+  }
+  if (normalized === "false" || normalized === "0" || normalized === "no" || normalized === "n") {
+    return false;
+  }
+  throw new Error(`Unsupported strict value: ${value}. Use true or false.`);
+}
+
+function normalizeClients(value: string): ReadonlyArray<ClientTarget> {
+  const parts = value
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter((item) => item.length > 0);
+
+  const targets: ClientTarget[] = [];
+  for (const item of parts) {
+    if (item === "cursor" || item === "claude") {
+      if (!targets.includes(item)) {
+        targets.push(item);
+      }
+      continue;
+    }
+    throw new Error(`Unsupported client target: ${item}. Use cursor and/or claude.`);
+  }
+
+  return targets.length === 0 ? ["cursor"] : targets;
+}

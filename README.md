@@ -148,6 +148,10 @@ Outputs:
 - **.NET team SOP:** [docs/dotnet-team-sop.md](docs/dotnet-team-sop.md)
 - **npm publish guide:** [docs/publish-public-npm.md](docs/publish-public-npm.md)
 
+## Changelog
+
+See **[CHANGELOG.md](CHANGELOG.md)** for release notes, version history, and improvements.
+
 ## High-Level Design
 
 - **Transport layer**: MCP stdio server in `src/server/main.ts` exposes project-brain tools.

@@ -59,7 +59,7 @@ async function askLanguage(
   rl: ReturnType<typeof createInterface>,
   detected: LanguageKind | null
 ): Promise<LanguageKind> {
-  const autoLabel = detected === null ? "none" : detected;
+  const autoLabel = detected ?? "none";
   console.log(`Detected language: ${autoLabel}`);
   console.log("Select language: 1) python  2) dotnet");
 
@@ -85,17 +85,23 @@ async function askInstallMode(rl: ReturnType<typeof createInterface>): Promise<I
 }
 
 async function askClientTargets(rl: ReturnType<typeof createInterface>): Promise<ReadonlyArray<ClientTarget>> {
-  console.log("Client config target: 1) Cursor only  2) Claude snippet only  3) Both");
-  const target = await rl.question("Choice (default 1): ");
-  const trimmed = target.trim();
+  console.log("Client config targets (y/n): Cursor, Claude, Windsurf, Copilot");
+  const targets: ClientTarget[] = [];
 
-  if (trimmed === "2") {
-    return ["claude"];
+  if (await askYesNo(rl, "Configure Cursor MCP config? (Y/n): ", true)) {
+    targets.push("cursor");
   }
-  if (trimmed === "3") {
-    return ["cursor", "claude"];
+  if (await askYesNo(rl, "Configure Claude Desktop snippet? (y/n, default n): ", false)) {
+    targets.push("claude");
   }
-  return ["cursor"];
+  if (await askYesNo(rl, "Configure Windsurf MCP config? (y/n, default n): ", false)) {
+    targets.push("windsurf");
+  }
+  if (await askYesNo(rl, "Configure Copilot MCP config? (y/n, default n): ", false)) {
+    targets.push("copilot");
+  }
+
+  return targets.length === 0 ? ["cursor"] : targets;
 }
 
 async function askYesNo(
@@ -113,10 +119,12 @@ async function askYesNo(
   return defaultYes;
 }
 
-main().catch((error: unknown) => {
+try {
+  await main();
+} catch (error: unknown) {
   console.error("Initialization failed:", error);
   process.exit(1);
-});
+}
 
 async function runNonInteractive(parsed: ParsedArgs): Promise<void> {
   await ensureProjectPathExists(parsed.projectPath);
@@ -165,7 +173,7 @@ function parseArgs(args: ReadonlyArray<string>): ParsedArgs | null {
 
   if (projectPath === undefined || language === undefined || strict === undefined || installMode === undefined) {
     throw new Error(
-      "Non-interactive usage requires --projectPath, --language, --strict, --installMode, and optional --clients."
+      "Non-interactive usage requires --projectPath, --language, --strict, --installMode, and optional --clients (cursor, claude, windsurf, copilot)."
     );
   }
 
@@ -216,13 +224,13 @@ function normalizeClients(value: string): ReadonlyArray<ClientTarget> {
 
   const targets: ClientTarget[] = [];
   for (const item of parts) {
-    if (item === "cursor" || item === "claude") {
+    if (item === "cursor" || item === "claude" || item === "windsurf" || item === "copilot") {
       if (!targets.includes(item)) {
         targets.push(item);
       }
       continue;
     }
-    throw new Error(`Unsupported client target: ${item}. Use cursor and/or claude.`);
+    throw new Error(`Unsupported client target: ${item}. Use cursor, claude, windsurf, and/or copilot.`);
   }
 
   return targets.length === 0 ? ["cursor"] : targets;

@@ -11,10 +11,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- Support for additional AI clients (Windsurf, Copilot integration templates)
 - CLI flags to export decisions / sessions as JSON for external tools
 - Phase-based rule templates (discovery, implementation, review, release)
 - Performance optimization for large decision/session histories
+
+---
+
+## [0.1.3] — 2026-05-03
+
+### Added
+
+- **Client compatibility matrix and setup snippets**
+  - Clarifies support for `Cursor`, `Claude Desktop`, `Windsurf`, and `GitHub Copilot`
+  - `interceptor-brain-init` now generates Windsurf and Copilot snippet files in `.interceptor-brain/`
+  - `docs/mcp-client-config.md` now documents the exact merge locations for each client
+
+### Changed
+
+- **README.md** now includes a support matrix and updated init examples for all supported clients
+- **docs/dotnet-team-sop.md** now points engineers to the per-client setup guide
+- **src/cli/init.ts** accepts `windsurf` and `copilot` in interactive and non-interactive setup
+- **src/features/project-bootstrap/application/services/project-bootstrapper.ts** writes Windsurf and Copilot snippet files alongside the existing Cursor and Claude outputs
 
 ---
 
@@ -111,6 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version Links
 
-- [Unreleased](https://github.com/SunitLabsOrg/interceptor-brain/compare/v0.1.1...main)
+- [Unreleased](https://github.com/SunitLabsOrg/interceptor-brain/compare/v0.1.3...main)
+- [0.1.3](https://github.com/SunitLabsOrg/interceptor-brain/releases/tag/v0.1.3) — 2026-05-03
 - [0.1.1](https://github.com/SunitLabsOrg/interceptor-brain/releases/tag/v0.1.1) — 2026-05-03
 - [0.1.0](https://github.com/SunitLabsOrg/interceptor-brain/releases/tag/v0.1.0) — 2026-04-15

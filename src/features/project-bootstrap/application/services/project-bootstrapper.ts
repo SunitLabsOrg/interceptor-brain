@@ -53,16 +53,20 @@ export class ProjectBootstrapper {
 
     if (options.clientTargets.includes("claude")) {
       const claudePath = path.join(brainDirectory, "claude_desktop_config.snippet.json");
-      await writeFile(
-        claudePath,
-        JSON.stringify({
-          mcpServers: {
-            "interceptor-brain": buildMcpServerEntry(projectPath, storePath, options.installMode)
-          }
-        }, null, 2),
-        "utf8"
-      );
+      await writeSnippetFile(claudePath, buildLocalMcpSnippet(projectPath, storePath, options.installMode));
       writtenFiles.push(claudePath);
+    }
+
+    if (options.clientTargets.includes("windsurf")) {
+      const windsurfPath = path.join(brainDirectory, "windsurf_mcp_config.snippet.json");
+      await writeSnippetFile(windsurfPath, buildLocalMcpSnippet(projectPath, storePath, options.installMode));
+      writtenFiles.push(windsurfPath);
+    }
+
+    if (options.clientTargets.includes("copilot")) {
+      const copilotPath = path.join(brainDirectory, "copilot_mcp_config.snippet.json");
+      await writeSnippetFile(copilotPath, buildCopilotMcpSnippet(projectPath, storePath, options.installMode));
+      writtenFiles.push(copilotPath);
     }
 
     const setupGuidePath = path.join(brainDirectory, "SETUP.md");
@@ -85,7 +89,7 @@ async function writeCursorConfig(
   const cursorDirectory = path.join(projectPath, ".cursor");
   await mkdir(cursorDirectory, { recursive: true });
   const cursorConfigPath = path.join(cursorDirectory, "mcp.json");
-  const serverEntry = buildMcpServerEntry(projectPath, storePath, installMode);
+  const serverEntry = buildLocalMcpServerEntry(projectPath, storePath, installMode);
 
   let existing: { mcpServers?: Record<string, unknown> } | undefined;
   try {
@@ -119,7 +123,7 @@ async function writeCursorConfig(
   return cursorConfigPath;
 }
 
-function buildMcpServerEntry(
+function buildLocalMcpServerEntry(
   projectPath: string,
   storePath: string,
   installMode: InstallMode
@@ -145,6 +149,41 @@ function buildMcpServerEntry(
   };
 }
 
+function buildCopilotMcpSnippet(
+  projectPath: string,
+  storePath: string,
+  installMode: InstallMode
+): { mcpServers: Record<string, { command: string; args?: string[]; env: Record<string, string>; type: "local"; tools: ReadonlyArray<string> }> } {
+  return {
+    mcpServers: {
+      "interceptor-brain": {
+        ...buildLocalMcpServerEntry(projectPath, storePath, installMode),
+        type: "local",
+        tools: ["*"]
+      }
+    }
+  };
+}
+
+function buildLocalMcpSnippet(
+  projectPath: string,
+  storePath: string,
+  installMode: InstallMode
+): { mcpServers: Record<string, { command: string; args?: string[]; env: Record<string, string> }> } {
+  return {
+    mcpServers: {
+      "interceptor-brain": buildLocalMcpServerEntry(projectPath, storePath, installMode)
+    }
+  };
+}
+
+async function writeSnippetFile(
+  filePath: string,
+  content: { mcpServers: Record<string, unknown> }
+): Promise<void> {
+  await writeFile(filePath, JSON.stringify(content, null, 2), "utf8");
+}
+
 function buildSetupGuide(clientTargets: ReadonlyArray<ClientTarget>): string {
   const lines = [
     "# Project Brain Setup",
@@ -158,11 +197,18 @@ function buildSetupGuide(clientTargets: ReadonlyArray<ClientTarget>): string {
     "4. End each session with `brain_update_session`."
   ];
 
-  if (clientTargets.includes("claude")) {
+  const mergeNotes = [
+    clientTargets.includes("claude") ? "- Claude Desktop: `claude_desktop_config.snippet.json`" : null,
+    clientTargets.includes("windsurf") ? "- Windsurf: `windsurf_mcp_config.snippet.json`" : null,
+    clientTargets.includes("copilot") ? "- Copilot: `copilot_mcp_config.snippet.json`" : null
+  ].filter((item): item is string => item !== null);
+
+  if (mergeNotes.length > 0) {
     return [
       ...lines,
       "",
-      "For Claude Desktop, merge `claude_desktop_config.snippet.json` into your app config."
+      "Merge the snippet files in `.interceptor-brain/` into the target client config:",
+      ...mergeNotes
     ].join("\n");
   }
 

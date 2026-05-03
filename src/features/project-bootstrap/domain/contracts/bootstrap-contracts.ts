@@ -1,6 +1,6 @@
 import type { LanguageKind } from "../../../shared/domain/contracts/common.js";
 
-export type ClientTarget = "cursor" | "claude";
+export type ClientTarget = "cursor" | "claude" | "windsurf" | "copilot";
 export type InstallMode = "global" | "local";
 
 export interface BootstrapInitOptions {

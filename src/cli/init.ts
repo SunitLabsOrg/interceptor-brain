@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { createInterface } from "node:readline/promises";
 import process from "node:process";
+import { renderBrainSpBanner } from "./render-brain-sp-banner.js";
 import { detectProjectLanguage, ensureProjectPathExists, ProjectBootstrapper } from "../features/project-bootstrap/application/services/project-bootstrapper.js";
 import type { ClientTarget, InstallMode } from "../features/project-bootstrap/domain/contracts/bootstrap-contracts.js";
 import type { LanguageKind } from "../features/shared/domain/contracts/common.js";
 
 async function main(): Promise<void> {
+  renderBrainSpBanner();
   const parsed = parseArgs(process.argv.slice(2));
   if (parsed !== null) {
     await runNonInteractive(parsed);

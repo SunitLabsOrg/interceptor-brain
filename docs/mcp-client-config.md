@@ -1,8 +1,14 @@
 # MCP Client Configuration
 
-Use the built server binary after running `npm run build`.
+This doc shows how to wire Interceptor Brain into Cursor, Claude Desktop, and other clients.
 
-## Cursor MCP configuration
+## Quick Note
+
+For a **5-minute walkthrough** of how to use the tools once wired up, see **[QUICKSTART.md](QUICKSTART.md)**.
+
+---
+
+## Cursor MCP Configuration
 
 Add this to your Cursor MCP config (or merge into existing servers):
 
@@ -12,17 +18,27 @@ Add this to your Cursor MCP config (or merge into existing servers):
     "interceptor-brain": {
       "command": "node",
       "args": [
-        "c:/jll_software/POC/SunitGitHub/the-interceptor/dist/server/main.js"
+        "c:/path/to/your/repo/dist/server/main.js"
       ],
       "env": {
-        "INTERCEPTOR_BRAIN_STORE": "c:/jll_software/POC/SunitGitHub/the-interceptor/.interceptor-brain/store.json"
+        "INTERCEPTOR_BRAIN_STORE": "c:/path/to/your/repo/.interceptor-brain/store.json"
       }
     }
   }
 }
 ```
 
-## Claude Desktop MCP configuration
+**Notes:**
+
+- Replace `c:/path/to/your/repo` with your actual repo path.
+- If you installed globally (`npm i -g @interceptor/brain-mcp`), use:
+  ```json
+  {
+    "command": "interceptor-brain-mcp"
+  }
+  ```
+
+## Claude Desktop MCP Configuration
 
 Add this to Claude Desktop config (or merge into existing `mcpServers`):
 
@@ -32,17 +48,17 @@ Add this to Claude Desktop config (or merge into existing `mcpServers`):
     "interceptor-brain": {
       "command": "node",
       "args": [
-        "c:/jll_software/POC/SunitGitHub/the-interceptor/dist/server/main.js"
+        "c:/path/to/your/repo/dist/server/main.js"
       ],
       "env": {
-        "INTERCEPTOR_BRAIN_STORE": "c:/jll_software/POC/SunitGitHub/the-interceptor/.interceptor-brain/store.json"
+        "INTERCEPTOR_BRAIN_STORE": "c:/path/to/your/repo/.interceptor-brain/store.json"
       }
     }
   }
 }
 ```
 
-## .NET solution example (ready to paste)
+## .NET Solution Example (Ready to Paste)
 
 Use this pattern when your .NET repo is at `c:/work/orders-api`:
 
@@ -62,32 +78,18 @@ Use this pattern when your .NET repo is at `c:/work/orders-api`:
 }
 ```
 
-Tips:
+## Configuration Tips
 
-- Keep one store file per repository.
-- Keep server name repo-specific (example: `interceptor-brain-orders-api`).
-- Commit policy is up to your team; most teams keep `.interceptor-brain` local only.
+- Keep **one store file per repository** (don't share stores across repos).
+- Keep **server name repo-specific** (e.g., `interceptor-brain-orders-api`, `interceptor-brain-inventory`).
+- **Commit policy is up to your team**; most teams keep `.interceptor-brain/` local only (add to `.gitignore`).
 
-## Recommended first call
+## Your First Call
 
-Run `brain_begin_feature` at session start to get previous handoff, create/start task, and load active rules in one step.
+After wiring up, **refresh MCP servers** in your client and try:
 
-## Quickstart: first 5 commands
+```
+brain_begin_feature "my-feature" implementation
+```
 
-Use this sequence in a new workspace to bootstrap with low friction:
-
-1. `brain_help` (see full recommended workflow)
-2. `brain_get_engineer_preferences`
-3. `brain_set_engineer_preferences` with `strictTaskGate: true` (or `false`)
-4. `brain_begin_feature` with title, description, and phase
-5. `brain_require_task` before implementation calls
-
-Before ending your session, call `brain_update_session` with done/next/watchouts so handoff stays fresh.
-
-## Engineer-level strict mode
-
-Each engineer can control strict task-gate behavior independently:
-
-1. Call `brain_set_engineer_preferences` with `strictTaskGate: true|false`.
-2. Call `brain_require_task` without `strictMode` to use your local default.
-3. Optionally pass `strictMode` in `brain_require_task` to override for one call.
+See **[QUICKSTART.md](QUICKSTART.md)** for a full walkthrough.

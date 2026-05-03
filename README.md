@@ -13,35 +13,46 @@ npm i -g @interceptor/brain-mcp
 interceptor-brain-init
 ```
 
+After a global install, npm runs `postinstall` and prints the **BRAIN SP** banner (red in a normal terminal). The same banner appears when you run **`interceptor-brain-init`** in any directory, before prompts or non-interactive setup.
+
 Then in your AI client:
 
 1. Refresh MCP servers.
-2. Run `brain_help`.
-3. Start with `brain_begin_feature`.
-4. Gate implementation with `brain_require_task`.
-5. End sessions with `brain_update_session`.
+2. Run `brain_begin_feature "my-feature" implementation`.
+3. Gate code changes with `brain_require_task "my-feature"`.
+4. Log decisions with `brain_log_decision` (when you make an arch choice).
+5. End session with `brain_update_session` (done/next/watchouts).
+
+**For a walkthrough**, see **[docs/QUICKSTART.md](docs/QUICKSTART.md)**.
 
 ## What It Solves
 
-- Session handoff in one tool call (what was done, what is next, what to watch out for).
-- Task gate enforcement (implementation must map to an existing task).
-- Decision logging with rationale for long-term traceability.
-- Phase-based rules loading (`discovery`, `implementation`, `review`, `release`).
+- **Session handoff** in one tool call (what was done, what is next, what to watch out for).
+- **Task gate enforcement** (implementation must map to an existing task).
+- **Decision logging** with rationale for long-term traceability.
+- **Phase-based rules** (`discovery`, `implementation`, `review`, `release`).
 
-## Key Tools
+## The 5 Essential Tools
 
-- `brain_help`: prints best-practice call order for engineers.
-- `brain_begin_feature`: one-call workflow for handoff + task create/start + active phase rules.
-- `brain_create_task`: create a feature/task item.
-- `brain_start_task`: mark task as `in_progress`.
-- `brain_require_task`: gate uses engineer default strict mode unless overridden per call.
-- `brain_set_engineer_preferences`: set your local default strict task gate behavior.
-- `brain_get_engineer_preferences`: view your local default strict task gate behavior.
-- `brain_update_session`: write done/next/watchouts for session handoff.
-- `brain_handoff`: read complete handoff context in one call.
-- `brain_log_decision`: capture decision + rationale.
-- `brain_find_decisions`: search historical decisions.
-- `brain_rules_for_phase`: load rules for a specific phase.
+| Tool | Purpose |
+|------|---------|
+| **`brain_begin_feature`** | Start feature: handoff + create task + start task + phase rules (one call) |
+| **`brain_require_task`** | Gate: enforce task exists (and optionally is `in_progress`) before coding |
+| **`brain_update_session`** | End session: log done/next/watchouts for the next person |
+| **`brain_handoff`** | Resume: read last session + phase rules for your phase |
+| **`brain_log_decision`** | Capture architecture decisions + rationale for audit trail |
+
+**Optional / Advanced:**
+
+- `brain_create_task` — Create a task manually (if not using `brain_begin_feature`).
+- `brain_start_task` — Mark a task `in_progress` manually.
+- `brain_find_decisions` — Search past decisions by keyword.
+- `brain_help` — Print best-practice call order.
+- `brain_get_engineer_preferences` — View your preferences.
+- `brain_set_engineer_preferences` — Set strict task gate default.
+- `brain_rules_for_phase` — Fetch phase rules explicitly.
+
+**Full reference:** See **[docs/TOOLS.md](docs/TOOLS.md)**.
 
 ## Storage
 
@@ -131,9 +142,15 @@ Outputs:
 
 ## Client Setup
 
-- Cursor and Claude Desktop MCP config snippets: `docs/mcp-client-config.md`
-- .NET team operating guide: `docs/dotnet-team-sop.md`
-- Public npm publish guide: `docs/publish-public-npm.md`
+- **Quick 5-minute walkthrough:** [docs/QUICKSTART.md](docs/QUICKSTART.md)
+- **Full tool reference:** [docs/TOOLS.md](docs/TOOLS.md)
+- **MCP config setup:** [docs/mcp-client-config.md](docs/mcp-client-config.md)
+- **.NET team SOP:** [docs/dotnet-team-sop.md](docs/dotnet-team-sop.md)
+- **npm publish guide:** [docs/publish-public-npm.md](docs/publish-public-npm.md)
+
+## Changelog
+
+See **[CHANGELOG.md](CHANGELOG.md)** for release notes, version history, and improvements.
 
 ## High-Level Design
 

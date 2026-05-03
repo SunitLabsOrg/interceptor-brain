@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "interceptor-brain": {
+      "command": "interceptor-brain-mcp",
+      "env": {
+        "INTERCEPTOR_BRAIN_STORE": "C:/jll_software/POC/SunitGitHub/publiccode/interceptor-brain/benchmark/test-project/.interceptor-brain/store.json"
+      }
+    }
+  }
+}

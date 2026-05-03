@@ -2,14 +2,14 @@
 
 MCP server that acts as the project's persistent brain.
 
-[![npm version](https://img.shields.io/npm/v/%40interceptor%2Fbrain-mcp)](https://www.npmjs.com/package/@interceptor/brain-mcp)
-[![npm downloads](https://img.shields.io/npm/dm/%40interceptor%2Fbrain-mcp)](https://www.npmjs.com/package/@interceptor/brain-mcp)
-[![license](https://img.shields.io/npm/l/%40interceptor%2Fbrain-mcp)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/%40sunit24blr%2Fbrain-mcp)](https://www.npmjs.com/package/@sunit24blr/brain-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/%40sunit24blr%2Fbrain-mcp)](https://www.npmjs.com/package/@sunit24blr/brain-mcp)
+[![license](https://img.shields.io/npm/l/%40sunit24blr%2Fbrain-mcp)](./LICENSE)
 
 ## Getting Started in 60 Seconds
 
 ```bash
-npm i -g @interceptor/brain-mcp
+npm i -g @sunit24blr/brain-mcp
 interceptor-brain-init
 ```
 

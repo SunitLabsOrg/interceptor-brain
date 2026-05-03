@@ -24,7 +24,7 @@ The essential workflow is:
 ## One-Time Setup Per Engineer
 
 1. Run initializer: `interceptor-brain-init` (or `npm run init:project`).
-2. Configure MCP server using `docs/mcp-client-config.md` if you need manual overrides.
+2. Configure MCP server using `docs/mcp-client-config.md` for Cursor, Claude Desktop, Windsurf, or Copilot if you need manual overrides.
 3. Ensure `INTERCEPTOR_BRAIN_STORE` points to this repo's local store file.
 4. (Optional) Set your strict task gate default:
    ```bash

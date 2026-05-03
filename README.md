@@ -25,6 +25,19 @@ Then in your AI client:
 
 **For a walkthrough**, see **[docs/QUICKSTART.md](docs/QUICKSTART.md)**.
 
+## Supported Clients
+
+Interceptor Brain is MCP-based, so it can work with any client that can load a local MCP server. The repo currently supports the following setup paths:
+
+| Client | Status | Setup output |
+|---|---|---|
+| Cursor | Supported | `.cursor/mcp.json` |
+| Claude Desktop | Supported | `.interceptor-brain/claude_desktop_config.snippet.json` |
+| Windsurf | Supported | `.interceptor-brain/windsurf_mcp_config.snippet.json` |
+| GitHub Copilot CLI / cloud agent | Supported | `.interceptor-brain/copilot_mcp_config.snippet.json` |
+
+See **[docs/mcp-client-config.md](docs/mcp-client-config.md)** for the exact merge locations for each client.
+
 ## What It Solves
 
 - **Session handoff** in one tool call (what was done, what is next, what to watch out for).
@@ -88,6 +101,8 @@ The initializer configures project-local files based on selected options:
 - `.interceptor-brain/brain.config.json`
 - `.cursor/mcp.json` (if Cursor target is selected)
 - `.interceptor-brain/claude_desktop_config.snippet.json` (if Claude target is selected)
+- `.interceptor-brain/windsurf_mcp_config.snippet.json` (if Windsurf target is selected)
+- `.interceptor-brain/copilot_mcp_config.snippet.json` (if Copilot target is selected)
 - `.interceptor-brain/SETUP.md`
 
 ## Non-Interactive Init Examples
@@ -113,7 +128,7 @@ interceptor-brain-init \
   --language python \
   --strict true \
   --installMode global \
-  --clients cursor,claude
+  --clients cursor,claude,windsurf,copilot
 ```
 
 Flags:
@@ -122,7 +137,7 @@ Flags:
 - `--language`: `python` or `dotnet`
 - `--strict`: `true` or `false`
 - `--installMode`: `global` or `local`
-- `--clients`: `cursor`, `claude`, or `cursor,claude`
+- `--clients`: `cursor`, `claude`, `windsurf`, `copilot`, or a comma-separated combination
 
 ## Benchmark (Before vs After)
 

@@ -71,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - All docs now link together (README → QUICKSTART → TOOLS)
 
 - **First-session experience**
-  - `npm i -g @interceptor/brain-mcp` → BRAIN SP banner + setup prompt
+  - `npm i -g @sunit24blr/brain-mcp` → BRAIN SP banner + setup prompt
   - `interceptor-brain-init` → BRAIN SP banner before interactive prompts
   - Clearer next steps in SETUP.md
 

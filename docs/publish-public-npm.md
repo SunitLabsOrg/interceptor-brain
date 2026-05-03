@@ -4,9 +4,9 @@ This guide helps you publish `interceptor-brain` for community use.
 
 ## 1) Choose your package name
 
-Current name is `@interceptor/brain-mcp`.
+Current name is `@sunit24blr/brain-mcp`.
 
-- If you own npm scope `@interceptor`, keep it.
+- If you own npm scope `@sunit24blr`, keep it.
 - If not, change `name` in `package.json` to your scope, for example:
   - `@your-npm-username/brain-mcp`
   - `@your-org/interceptor-brain-mcp`
@@ -37,7 +37,7 @@ npm publish --access public
 ## 4) Verify install from registry
 
 ```bash
-npm i -g <your-package-name>
+npm i -g @sunit24blr/brain-mcp
 interceptor-brain-init
 ```
 
@@ -46,6 +46,6 @@ interceptor-brain-init
 Include this in your README release notes:
 
 ```bash
-npm i -g <your-package-name>
+npm i -g @sunit24blr/brain-mcp
 interceptor-brain-init
 ```

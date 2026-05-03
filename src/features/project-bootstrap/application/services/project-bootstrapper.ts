@@ -87,23 +87,32 @@ async function writeCursorConfig(
   const cursorConfigPath = path.join(cursorDirectory, "mcp.json");
   const serverEntry = buildMcpServerEntry(projectPath, storePath, installMode);
 
-  let existing: { mcpServers?: Record<string, unknown> } = {};
+  let existing: { mcpServers?: Record<string, unknown> } | undefined;
   try {
     const content = await readFile(cursorConfigPath, "utf8");
     existing = JSON.parse(content) as { mcpServers?: Record<string, unknown> };
   } catch {
-    existing = {};
+    existing = undefined;
   }
+
+  const nextConfig =
+    existing?.mcpServers === undefined
+      ? {
+          mcpServers: {
+            "interceptor-brain": serverEntry
+          }
+        }
+      : {
+          ...existing,
+          mcpServers: {
+            ...existing.mcpServers,
+            "interceptor-brain": serverEntry
+          }
+        };
 
   await writeFile(
     cursorConfigPath,
-    JSON.stringify({
-      ...existing,
-      mcpServers: {
-        ...(existing.mcpServers ?? {}),
-        "interceptor-brain": serverEntry
-      }
-    }, null, 2),
+    JSON.stringify(nextConfig, null, 2),
     "utf8"
   );
 
@@ -125,7 +134,7 @@ function buildMcpServerEntry(
   }
 
   const localServerPath = toForwardSlashes(
-    path.join(projectPath, "node_modules", "@interceptor", "brain-mcp", "dist", "server", "main.js")
+    path.join(projectPath, "node_modules", "@sunit24blr", "brain-mcp", "dist", "server", "main.js")
   );
   return {
     command: "node",
@@ -150,8 +159,11 @@ function buildSetupGuide(clientTargets: ReadonlyArray<ClientTarget>): string {
   ];
 
   if (clientTargets.includes("claude")) {
-    lines.push("");
-    lines.push("For Claude Desktop, merge `claude_desktop_config.snippet.json` into your app config.");
+    return [
+      ...lines,
+      "",
+      "For Claude Desktop, merge `claude_desktop_config.snippet.json` into your app config."
+    ].join("\n");
   }
 
   return lines.join("\n");

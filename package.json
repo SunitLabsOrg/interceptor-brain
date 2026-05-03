@@ -1,6 +1,6 @@
 {
-  "name": "@interceptor/brain-mcp",
-  "version": "0.1.1",
+  "name": "@sunit24blr/brain-mcp",
+  "version": "0.1.2",
   "description": "MCP server that acts as a project brain with handoffs, tasks, decisions, and phase rules.",
   "type": "module",
   "main": "dist/index.js",

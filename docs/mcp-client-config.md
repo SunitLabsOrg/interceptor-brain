@@ -31,7 +31,7 @@ Add this to your Cursor MCP config (or merge into existing servers):
 **Notes:**
 
 - Replace `c:/path/to/your/repo` with your actual repo path.
-- If you installed globally (`npm i -g @interceptor/brain-mcp`), use:
+- If you installed globally (`npm i -g @sunit24blr/brain-mcp`), use:
   ```json
   {
     "command": "interceptor-brain-mcp"
